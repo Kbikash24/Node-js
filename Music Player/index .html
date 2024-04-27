@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/7dc3aae689.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="music-player">
+           
+            <nav>
+                <div class="circle"><i class="fas fa-angle-left"></i></div>
+                <select id="songList"></select>
+                <div class="circle"><i class="fas fa-bars" onclick="getSongList()"></i></div>
+            </nav>
+            <img src="media/thumbnail.png.png" alt="" class="song-image">
+            <h1 id="songTitle">Ashique</h1>
+            <p id="songArtist">Tum hi ho ft.Arijit Singh</p>
+            <audio id="song">
+                <source src="media/01 - Tum Hi Ho - Arijit Singh (128Kbps).mp3" type="audio/mpeg">
+            </audio>
+            <input type="range" value="0" id="progress">
+            <div class="controls">
+                <div onclick="playPrevious()"><i class="fas fa-backward"></i></div>
+                <div onclick="playPause()"><i class="fas fa-play" id="control-icon"></i></div>
+                <div onclick="playNext()"><i class="fas fa-forward"></i></div>
+            </div>
+        </div>
+        
+    </div>
+    <script>
+        let progress = document.getElementById("progress");
+        let song = document.getElementById("song");
+        let cntrlIcon = document.getElementById("control-icon");
+        let songTitle = document.getElementById("songTitle");
+        let songArtist = document.getElementById("songArtist");
+        let songsList= document.getElementById("songList")
+
+
+
+     
+        song.onloadedmetadata = function() {
+            progress.max = song.duration;
+            progress.value = song.currentTime;
+        }
+
+        function playPause() {
+            if (song.paused) {
+                song.play();
+                cntrlIcon.classList.remove("fa-play");
+                cntrlIcon.classList.add("fa-pause");
+            }
+             else {
+                song.pause();
+                cntrlIcon.classList.remove("fa-pause");
+                cntrlIcon.classList.add("fa-play");
+            }
+        }
+
+        song.ontimeupdate = function() {
+            progress.value = song.currentTime;
+        };
+
+        progress.oninput = function() {
+            song.currentTime = progress.value;
+        };
+
+        let playlist = [
+            {
+                title: "Ashique",
+                artist: "tum hi ho ft. Arijit Singh ",
+                file: "media/01 - Tum Hi Ho - Arijit Singh (128Kbps).mp3"
+            },
+            {
+                title: "Murder",
+                artist: "Hale Dil ft. Harshit Saxena",
+                file: "media/[Songs.PK] Murder 2 - 01 - Hale Dil.mp3"
+            },
+            {
+                title: "Murder",
+                artist: "terebin ft. Harshit Saxena",
+                file: "media/09 - Tere Bin-(MyMp3Singer.com).mp3"
+            },
+            {
+                title: "sonali cable",
+                artist: "ek mulakat ft.Altamsh",
+                file: "media/09_-_Ek_Mulaqat_(Female)-(MyMp3Singer.com).mp3"
+            },
+            {
+                title: "Murder",
+                artist: "kyu hua ft. Harshit Saxena",
+                file: "media/03_-_Kyu_Hua-(MyMp3Singer.com).mp3"
+            },
+            {
+                title: "3-idiots",
+                artist: "Give me sunshine ft. Harshit Saxena",
+                file: "media/3idiots04.mp3"
+            },
+            {
+                title: "Murder",
+                artist: "Hum Mar Jayenge  ft. Harshit Saxena",
+                file: "media/04 - A2 - Hum Mar Jayenge [DJMaza].mp3"
+            },
+            {
+                title: "Murder",
+                artist: "Awari ft. Harshit Saxena",
+                file: "media/04 - Awari - DownloadMing.SE.mp3"
+            },
+            {
+                title: "Murder",
+                artist: " Chaahata Dil Tumko ft. Harshit Saxena",
+                file: "media/04 - Chaahata Dil Tumko Tum Nahin Janate-(MyMp3Singer.com).mp3"
+            },
+            {
+                title: "Murder",
+                artist: "Hale Dil ft. Harshit Saxena",
+                file: "media/[Songs.PK] Murder 2 - 01 - Hale Dil.mp3"
+            },
+            // Add more songs as needed
+        ];
+        let currentSongIndex = 0;
+
+        function playNext() {
+            currentSongIndex = (currentSongIndex + 1) % playlist.length;
+            console.log("Next song index:", currentSongIndex);
+    console.log("Next song file:", playlist[currentSongIndex].file);
+            loadSong(currentSongIndex);
+        }
+
+        function playPrevious() {
+            currentSongIndex = (currentSongIndex - 1 + playlist.length) % playlist.length;
+            loadSong(currentSongIndex);
+        }
+
+        function loadSong(index) {
+            let songs = playlist[index];
+            let image=
+            songTitle.innerText = songs.title;
+            songArtist.innerText = songs.artist;
+            song.src = songs.file;
+            song.play();
+
+
+            
+            
+        }
+        function getSongList() {
+            
+        
+            songsList.style.display="block"
+           
+    // Clear existing options before populating
+    songsList.innerHTML = "";
+
+    // Populate the select element with song options
+    playlist.forEach((song, index) => {
+        let option = document.createElement("option");
+        option.value = index; // Set the value to the index of the song
+        option.text = song.title;
+        songsList.appendChild(option);
+        
+    });
+}
+
+      
+    </script>
+</body>
+</html>

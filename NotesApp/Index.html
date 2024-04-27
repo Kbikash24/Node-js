@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Notes App</title>
+</head>
+<body>
+    <div class="container">
+        <h1><img src="images/notes.png">Notes</h1>
+        <button class="btn"><img src="/images/edit.png" alt="">create notes</button>
+        <div class="notes-container">
+            <!-- <p contenteditable="true" class="input-box">
+            <img src="images/delete.png" alt="">
+        </p> -->
+    </div>
+    </div>
+    <script >
+        const noteContainer=document.querySelector(".notes-container");
+        const createBtn=document.querySelector(".btn");
+        let notes=document.querySelectorAll(".input-box");
+
+        
+function showNotes() {
+  const storedNotes = localStorage.getItem("notes");
+  if (storedNotes) {
+    noteContainer.innerHTML = storedNotes;
+  }
+}
+      
+
+
+       function upadte(){
+        localStorage.setItem("notes",noteContainer.innerHTML);
+       }
+
+        createBtn.addEventListener("click",()=>{
+            let inputBox=document.createElement("p");
+            let img=document.createElement("img")
+            inputBox.className="input-box"
+            inputBox.setAttribute("contenteditable","true");
+            img.src="images/delete.png";
+            noteContainer.appendChild(inputBox).appendChild(img);
+        })
+          
+noteContainer.addEventListener("click", (e) => {
+  if (e.target.tagName === "IMG") {
+    e.target.parentElement.remove();
+    upadte();  }
+});
+
+// Event delegation for keyup event within the container
+noteContainer.addEventListener("keyup", (e) => {
+  if (e.target.classList.contains("input-box")) {
+    upadte();
+  }
+});
+          showNotes();
+    </script>
+</body>
+</html>
